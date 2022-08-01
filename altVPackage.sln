@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "altVPackage", "altVPackage\altVPackage.csproj", "{AEDF1461-3FF2-4169-9103-A8614BD2E2BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEDF1461-3FF2-4169-9103-A8614BD2E2BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEDF1461-3FF2-4169-9103-A8614BD2E2BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEDF1461-3FF2-4169-9103-A8614BD2E2BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEDF1461-3FF2-4169-9103-A8614BD2E2BD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
