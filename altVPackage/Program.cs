@@ -132,6 +132,15 @@ namespace altVPackage
             }
             else Console.WriteLine("clothes.bin is up to date and skipped");
             
+            if (await CalculateHash($"{config.OutputPath}/data/pedmodels.bin") !=
+                await GetUpdatedHash($"https://cdn.altv.mp/data/{config.Branch}/update.json",
+                    $"pedmodels.bin"))
+            {
+                await DownloadFile($"https://cdn.altv.mp/data/{config.Branch}/data/pedmodels.bin",
+                    $"{config.OutputPath}/data/pedmodels.bin");
+            }
+            else Console.WriteLine("pedmodels.bin is up to date and skipped");
+            
             Console.WriteLine();
             Console.WriteLine("Finish server download\n");
         }
