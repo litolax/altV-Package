@@ -18,7 +18,8 @@ namespace altVPackage
             public string OutputPath { get; set; } = "./";
         }
 
-        public static readonly List<string> Branches = new() {"release", "rc", "dev"};
+        private static readonly List<string> Branches = new() {"release", "rc", "dev"};
+        private const string CDN_URL = "cdn.alt-mp.com";
 
         public static async Task Main(string[] args)
         {
@@ -96,47 +97,47 @@ namespace altVPackage
             Console.WriteLine("Starting server download\n");
             
             if (await CalculateHash($"{config.OutputPath}/{(config.Windows ? "altv-server.exe" : "altv-server")}") !=
-                await GetUpdatedHash($"https://cdn.altv.mp/server/{config.Branch}/{system}/update.json",
+                await GetUpdatedHash($"https://{CDN_URL}/server/{config.Branch}/{system}/update.json",
                     $"{(config.Windows ? "altv-server.exe" : "altv-server")}"))
             {
                 await DownloadFile(
-                    $"https://cdn.altv.mp/server/{config.Branch}/{system}/{(config.Windows ? "altv-server.exe" : "altv-server")}",
+                    $"https://{CDN_URL}/server/{config.Branch}/{system}/{(config.Windows ? "altv-server.exe" : "altv-server")}",
                     $"{config.OutputPath}/{(config.Windows ? "altv-server.exe" : "altv-server")}");
             }
             else Console.WriteLine("Server is up to date and skipped");
 
             if (await CalculateHash($"{config.OutputPath}/data/vehmodels.bin") !=
-                await GetUpdatedHash($"https://cdn.altv.mp/data/{config.Branch}/update.json",
+                await GetUpdatedHash($"https://{CDN_URL}/data/{config.Branch}/update.json",
                     $"vehmodels.bin"))
             {
-                await DownloadFile($"https://cdn.altv.mp/data/{config.Branch}/data/vehmodels.bin",
+                await DownloadFile($"https://{CDN_URL}/data/{config.Branch}/data/vehmodels.bin",
                     $"{config.OutputPath}/data/vehmodels.bin");
             }
             else Console.WriteLine("vehmodels.bin is up to date and skipped");
             
             if (await CalculateHash($"{config.OutputPath}/data/vehmods.bin") !=
-                await GetUpdatedHash($"https://cdn.altv.mp/data/{config.Branch}/update.json",
+                await GetUpdatedHash($"https://{CDN_URL}/data/{config.Branch}/update.json",
                     $"vehmods.bin"))
             {
-                await DownloadFile($"https://cdn.altv.mp/data/{config.Branch}/data/vehmods.bin",
+                await DownloadFile($"https://{CDN_URL}/data/{config.Branch}/data/vehmods.bin",
                     $"{config.OutputPath}/data/vehmods.bin");
             }
             else Console.WriteLine("vehmods.bin is up to date and skipped");
             
             if (await CalculateHash($"{config.OutputPath}/data/clothes.bin") !=
-                await GetUpdatedHash($"https://cdn.altv.mp/data/{config.Branch}/update.json",
+                await GetUpdatedHash($"https://{CDN_URL}/data/{config.Branch}/update.json",
                     $"clothes.bin"))
             {
-                await DownloadFile($"https://cdn.altv.mp/data/{config.Branch}/data/clothes.bin",
+                await DownloadFile($"https://{CDN_URL}/data/{config.Branch}/data/clothes.bin",
                     $"{config.OutputPath}/data/clothes.bin");
             }
             else Console.WriteLine("clothes.bin is up to date and skipped");
             
             if (await CalculateHash($"{config.OutputPath}/data/pedmodels.bin") !=
-                await GetUpdatedHash($"https://cdn.altv.mp/data/{config.Branch}/update.json",
+                await GetUpdatedHash($"https://{CDN_URL}/data/{config.Branch}/update.json",
                     $"pedmodels.bin"))
             {
-                await DownloadFile($"https://cdn.altv.mp/data/{config.Branch}/data/pedmodels.bin",
+                await DownloadFile($"https://{CDN_URL}/data/{config.Branch}/data/pedmodels.bin",
                     $"{config.OutputPath}/data/pedmodels.bin");
             }
             else Console.WriteLine("pedmodels.bin is up to date and skipped");
@@ -151,11 +152,11 @@ namespace altVPackage
 
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "altv-voice-server.exe" : "altv-voice-server")}") !=
-                await GetUpdatedHash($"https://cdn.altv.mp/voice-server/{config.Branch}/{system}/update.json",
+                await GetUpdatedHash($"https://{CDN_URL}/voice-server/{config.Branch}/{system}/update.json",
                     $"{(config.Windows ? "altv-voice-server.exe" : "altv-voice-server")}"))
             {
                 await DownloadFile(
-                    $"https://cdn.altv.mp/voice-server/{config.Branch}/{system}/{(config.Windows ? "altv-voice-server.exe" : "altv-voice-server")}",
+                    $"https://{CDN_URL}/voice-server/{config.Branch}/{system}/{(config.Windows ? "altv-voice-server.exe" : "altv-voice-server")}",
                     $"{config.OutputPath}/{(config.Windows ? "altv-voice-server.exe" : "altv-voice-server")}");
             }
             else Console.WriteLine("Voice is up to date and skipped");
@@ -169,20 +170,20 @@ namespace altVPackage
             Console.WriteLine("Starting csharp download\n");
 
             if (await CalculateHash($"{config.OutputPath}/AltV.Net.Host.dll") != await GetUpdatedHash(
-                    $"https://cdn.altv.mp/coreclr-module/{config.Branch}/{system}/update.json",
+                    $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/update.json",
                     "AltV.Net.Host.dll"))
             {
-                await DownloadFile($"https://cdn.altv.mp/coreclr-module/{config.Branch}/{system}/AltV.Net.Host.dll",
+                await DownloadFile($"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/AltV.Net.Host.dll",
                     $"{config.OutputPath}/AltV.Net.Host.dll");
             }
             else Console.WriteLine("AltV.Net.Host.dll is up to date and skipped");
 
             if (await CalculateHash($"{config.OutputPath}/AltV.Net.Host.runtimeconfig.json") != await GetUpdatedHash(
-                    $"https://cdn.altv.mp/coreclr-module/{config.Branch}/{system}/update.json",
+                    $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/update.json",
                     "AltV.Net.Host.runtimeconfig.json"))
             {
                 await DownloadFile(
-                    $"https://cdn.altv.mp/coreclr-module/{config.Branch}/{system}/AltV.Net.Host.runtimeconfig.json",
+                    $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/AltV.Net.Host.runtimeconfig.json",
                     $"{config.OutputPath}/AltV.Net.Host.runtimeconfig.json");
             }
             else Console.WriteLine("AltV.Net.Host.runtimeconfig.json is up to date and skipped");
@@ -190,11 +191,11 @@ namespace altVPackage
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "modules/csharp-module.dll" : "modules/libcsharp-module.so")}") !=
                 await GetUpdatedHash(
-                    $"https://cdn.altv.mp/coreclr-module/{config.Branch}/{system}/update.json",
+                    $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/update.json",
                     $"{(config.Windows ? "modules/csharp-module.dll" : "modules/libcsharp-module.so")}"))
             {
                 await DownloadFile(
-                    $"https://cdn.altv.mp/coreclr-module/{config.Branch}/{system}/modules/{(config.Windows ? "csharp-module.dll" : "libcsharp-module.so")}",
+                    $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/modules/{(config.Windows ? "csharp-module.dll" : "libcsharp-module.so")}",
                     $"{config.OutputPath}/modules/{(config.Windows ? "csharp-module.dll" : "libcsharp-module.so")}");
             }
             else
@@ -212,11 +213,11 @@ namespace altVPackage
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "modules/js-module/js-module.dll" : "modules/js-module/libjs-module.so")}") !=
                 await GetUpdatedHash(
-                    $"https://cdn.altv.mp/js-module/{config.Branch}/{system}/update.json",
+                    $"https://{CDN_URL}/js-module/{config.Branch}/{system}/update.json",
                     $"{(config.Windows ? "modules/js-module/js-module.dll" : "modules/js-module/libjs-module.so")}"))
             {
                 await DownloadFile(
-                    $"https://cdn.altv.mp/js-module/{config.Branch}/{system}/modules/js-module/{(config.Windows ? "js-module.dll" : "libjs-module.so")}",
+                    $"https://{CDN_URL}/js-module/{config.Branch}/{system}/modules/js-module/{(config.Windows ? "js-module.dll" : "libjs-module.so")}",
                     $"{config.OutputPath}/modules/js-module/{(config.Windows ? "js-module.dll" : "libjs-module.so")}");
             }
             else
@@ -226,11 +227,11 @@ namespace altVPackage
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "modules/js-module/libnode.dll" : "modules/js-module/libnode.so.102")}") !=
                 await GetUpdatedHash(
-                    $"https://cdn.altv.mp/js-module/{config.Branch}/{system}/update.json",
+                    $"https://{CDN_URL}/js-module/{config.Branch}/{system}/update.json",
                     $"{(config.Windows ? "modules/js-module/libnode.dll" : "modules/js-module/libnode.so.102")}"))
             {
                 await DownloadFile(
-                    $"https://cdn.altv.mp/js-module/{config.Branch}/{system}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.102")}",
+                    $"https://{CDN_URL}/js-module/{config.Branch}/{system}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.102")}",
                     $"{config.OutputPath}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.102")}");
             }
             else Console.WriteLine($"{(config.Windows ? "libnode.dll" : "libnode.so.102")} is up to date and skipped");
@@ -246,11 +247,11 @@ namespace altVPackage
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "modules/js-bytecode-module.dll" : "modules/libjs-bytecode-module.so")}") !=
                 await GetUpdatedHash(
-                    $"https://cdn.altv.mp/js-bytecode-module/{config.Branch}/{system}/update.json",
+                    $"https://{CDN_URL}/js-bytecode-module/{config.Branch}/{system}/update.json",
                     $"{(config.Windows ? "modules/js-bytecode-module.dll" : "modules/libjs-bytecode-module.so")}"))
             {
                 await DownloadFile(
-                    $"https://cdn.altv.mp/js-bytecode-module/{config.Branch}/{system}/modules/{(config.Windows ? "js-bytecode-module.dll" : "libjs-bytecode-module.so")}",
+                    $"https://{CDN_URL}/js-bytecode-module/{config.Branch}/{system}/modules/{(config.Windows ? "js-bytecode-module.dll" : "libjs-bytecode-module.so")}",
                     $"{config.OutputPath}/modules/{(config.Windows ? "js-bytecode-module.dll" : "libjs-bytecode-module.so")}");
             }
             else
