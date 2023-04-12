@@ -225,16 +225,16 @@ namespace altVPackage
                     $"{(config.Windows ? "js-module.dll" : "libjs-module.so")} is up to date and skipped");
 
             if (await CalculateHash(
-                    $"{config.OutputPath}/{(config.Windows ? "modules/js-module/libnode.dll" : "modules/js-module/libnode.so.102")}") !=
+                    $"{config.OutputPath}/{(config.Windows ? "modules/js-module/libnode.dll" : "modules/js-module/libnode.so.108")}") !=
                 await GetUpdatedHash(
                     $"https://{CDN_URL}/js-module/{config.Branch}/{system}/update.json",
-                    $"{(config.Windows ? "modules/js-module/libnode.dll" : "modules/js-module/libnode.so.102")}"))
+                    $"{(config.Windows ? "modules/js-module/libnode.dll" : "modules/js-module/libnode.so.108")}"))
             {
                 await DownloadFile(
-                    $"https://{CDN_URL}/js-module/{config.Branch}/{system}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.102")}",
-                    $"{config.OutputPath}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.102")}");
+                    $"https://{CDN_URL}/js-module/{config.Branch}/{system}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.108")}",
+                    $"{config.OutputPath}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.108")}");
             }
-            else Console.WriteLine($"{(config.Windows ? "libnode.dll" : "libnode.so.102")} is up to date and skipped");
+            else Console.WriteLine($"{(config.Windows ? "libnode.dll" : "libnode.so.108")} is up to date and skipped");
             
             Console.WriteLine();
             Console.WriteLine("Finish js download\n");
