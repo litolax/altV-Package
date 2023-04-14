@@ -24,12 +24,12 @@ namespace altVPackage
 
         public static async Task Main(string[] args)
         {
-            ConsoleWrapper.WriteLine("alt:V Package started", LogType.Success);
+            ConsoleWrapper.WriteLine("alt:V Package started", LogType.Success, true);
             var config = new Config();
 
             if (!File.Exists("./config.json"))
             {
-                ConsoleWrapper.WriteLine("Config file not found", LogType.Error);
+                ConsoleWrapper.WriteLine("Config file not found", LogType.Error, true);
                 ConsoleWrapper.WriteLine("Please enter branch name");
 
                 var branch = Console.ReadLine()?.ToLower() ?? "release";
@@ -60,19 +60,19 @@ namespace altVPackage
                 config.OutputPath = Console.ReadLine() ?? "./";
 
                 await File.WriteAllTextAsync("./config.json", JsonSerializer.Serialize(config));
-                ConsoleWrapper.WriteLine("Config file created\n", LogType.Success);
+                ConsoleWrapper.WriteLine("Config file created\n", LogType.Success, true);
             }
             else
             {
                 config = JsonSerializer.Deserialize<Config>(await File.ReadAllTextAsync("./config.json"));
                 if (config is null)
                 {
-                    ConsoleWrapper.WriteLine("Config file is invalid, remove it and run the program again\n", LogType.Error);
+                    ConsoleWrapper.WriteLine("Config file is invalid, remove it and run the program again\n", LogType.Error, true);
                     return;
                 }
             }
 
-            ConsoleWrapper.WriteLine("Begin packages download\n", LogType.Info);
+            ConsoleWrapper.WriteLine("Begin packages download\n", LogType.Info, true);
 
             if (config.Server) Directory.CreateDirectory($@"{config.OutputPath}/data");
             if (config.CSharp) Directory.CreateDirectory($@"{config.OutputPath}/modules");
@@ -90,13 +90,13 @@ namespace altVPackage
 
             if (config is { JsByteCode: true, Branch: "release" }) await DownloadJsByteCode(config, system);
 
-            ConsoleWrapper.WriteLine("Download finished\n", LogType.Success);
+            ConsoleWrapper.WriteLine("Download finished\n", LogType.Success, true);
             Console.ReadKey();
         }
 
-        public static async Task DownloadServer(Config config, string system)
+        private static async Task DownloadServer(Config config, string system)
         {
-            ConsoleWrapper.WriteLine("Starting server download\n", LogType.Info);
+            ConsoleWrapper.WriteLine("Starting server download\n", LogType.Info, true);
 
             if (await CalculateHash($"{config.OutputPath}/{(config.Windows ? "altv-server.exe" : "altv-server")}") !=
                 await GetUpdatedHash($"https://{CDN_URL}/server/{config.Branch}/{system}/update.json",
@@ -106,9 +106,9 @@ namespace altVPackage
                     $"https://{CDN_URL}/server/{config.Branch}/{system}/{(config.Windows ? "altv-server.exe" : "altv-server")}",
                     $"{config.OutputPath}/{(config.Windows ? "altv-server.exe" : "altv-server")}");
                 
-                ConsoleWrapper.WriteLine("Server is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("Server is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine("Server is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine("Server is up to date and skipped", LogType.Info, true);
 
             if (await CalculateHash($"{config.OutputPath}/data/vehmodels.bin") !=
                 await GetUpdatedHash($"https://{CDN_URL}/data/{config.Branch}/update.json",
@@ -117,9 +117,9 @@ namespace altVPackage
                 await DownloadFile($"https://{CDN_URL}/data/{config.Branch}/data/vehmodels.bin",
                     $"{config.OutputPath}/data/vehmodels.bin");
                 
-                ConsoleWrapper.WriteLine("vehmodels.bin is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("vehmodels.bin is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine("vehmodels.bin is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine("vehmodels.bin is up to date and skipped", LogType.Info, true);
 
             if (await CalculateHash($"{config.OutputPath}/data/vehmods.bin") !=
                 await GetUpdatedHash($"https://{CDN_URL}/data/{config.Branch}/update.json",
@@ -128,9 +128,9 @@ namespace altVPackage
                 await DownloadFile($"https://{CDN_URL}/data/{config.Branch}/data/vehmods.bin",
                     $"{config.OutputPath}/data/vehmods.bin");
                 
-                ConsoleWrapper.WriteLine("vehmods.bin is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("vehmods.bin is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine("vehmods.bin is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine("vehmods.bin is up to date and skipped", LogType.Info, true);
 
             if (await CalculateHash($"{config.OutputPath}/data/clothes.bin") !=
                 await GetUpdatedHash($"https://{CDN_URL}/data/{config.Branch}/update.json",
@@ -139,9 +139,9 @@ namespace altVPackage
                 await DownloadFile($"https://{CDN_URL}/data/{config.Branch}/data/clothes.bin",
                     $"{config.OutputPath}/data/clothes.bin");
                 
-                ConsoleWrapper.WriteLine("clothes.bin is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("clothes.bin is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine("clothes.bin is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine("clothes.bin is up to date and skipped", LogType.Info, true);
 
             if (await CalculateHash($"{config.OutputPath}/data/pedmodels.bin") !=
                 await GetUpdatedHash($"https://{CDN_URL}/data/{config.Branch}/update.json",
@@ -150,17 +150,17 @@ namespace altVPackage
                 await DownloadFile($"https://{CDN_URL}/data/{config.Branch}/data/pedmodels.bin",
                     $"{config.OutputPath}/data/pedmodels.bin");
                 
-                ConsoleWrapper.WriteLine("pedmodels.bin is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("pedmodels.bin is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine("pedmodels.bin is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine("pedmodels.bin is up to date and skipped", LogType.Info, true);
 
             Console.WriteLine();
-            ConsoleWrapper.WriteLine("Finish server download\n", LogType.Success);
+            ConsoleWrapper.WriteLine("Finish server download\n", LogType.Success, true);
         }
 
-        public static async Task DownloadVoice(Config config, string system)
+        private static async Task DownloadVoice(Config config, string system)
         {
-            ConsoleWrapper.WriteLine("Starting voice server download\n", LogType.Info);
+            ConsoleWrapper.WriteLine("Starting voice server download\n", LogType.Info, true);
 
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "altv-voice-server.exe" : "altv-voice-server")}") !=
@@ -171,17 +171,17 @@ namespace altVPackage
                     $"https://{CDN_URL}/voice-server/{config.Branch}/{system}/{(config.Windows ? "altv-voice-server.exe" : "altv-voice-server")}",
                     $"{config.OutputPath}/{(config.Windows ? "altv-voice-server.exe" : "altv-voice-server")}");
                 
-                ConsoleWrapper.WriteLine("altv-voice-server.exe is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("altv-voice-server.exe is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine("Voice is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine("Voice is up to date and skipped", LogType.Info, true);
 
             Console.WriteLine();
-            ConsoleWrapper.WriteLine("Finish voice server download\n", LogType.Success);
+            ConsoleWrapper.WriteLine("Finish voice server download\n", LogType.Success, true);
         }
 
-        public static async Task DownloadCsharp(Config config, string system)
+        private static async Task DownloadCsharp(Config config, string system)
         {
-            ConsoleWrapper.WriteLine("Starting csharp download\n", LogType.Info);
+            ConsoleWrapper.WriteLine("Starting csharp download\n", LogType.Info, true);
 
             if (await CalculateHash($"{config.OutputPath}/AltV.Net.Host.dll") != await GetUpdatedHash(
                     $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/update.json",
@@ -190,9 +190,9 @@ namespace altVPackage
                 await DownloadFile($"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/AltV.Net.Host.dll",
                     $"{config.OutputPath}/AltV.Net.Host.dll");
                 
-                ConsoleWrapper.WriteLine("AltV.Net.Host.dll is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("AltV.Net.Host.dll is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine("AltV.Net.Host.dll is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine("AltV.Net.Host.dll is up to date and skipped", LogType.Info, true);
 
             if (await CalculateHash($"{config.OutputPath}/AltV.Net.Host.runtimeconfig.json") != await GetUpdatedHash(
                     $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/update.json",
@@ -202,9 +202,9 @@ namespace altVPackage
                     $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/AltV.Net.Host.runtimeconfig.json",
                     $"{config.OutputPath}/AltV.Net.Host.runtimeconfig.json");
                 
-                ConsoleWrapper.WriteLine("AltV.Net.Host.runtimeconfig.json is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("AltV.Net.Host.runtimeconfig.json is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine("AltV.Net.Host.runtimeconfig.json is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine("AltV.Net.Host.runtimeconfig.json is up to date and skipped", LogType.Info, true);
 
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "modules/csharp-module.dll" : "modules/libcsharp-module.so")}") !=
@@ -216,19 +216,19 @@ namespace altVPackage
                     $"https://{CDN_URL}/coreclr-module/{config.Branch}/{system}/modules/{(config.Windows ? "csharp-module.dll" : "libcsharp-module.so")}",
                     $"{config.OutputPath}/modules/{(config.Windows ? "csharp-module.dll" : "libcsharp-module.so")}");
                 
-                ConsoleWrapper.WriteLine("csharp-module.dll is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("csharp-module.dll is downloaded", LogType.Success, true);
             }
             else
                 ConsoleWrapper.WriteLine(
-                    $"{(config.Windows ? "csharp-module.dll" : "libcsharp-module.so")} is up to date and skipped", LogType.Info);
+                    $"{(config.Windows ? "csharp-module.dll" : "libcsharp-module.so")} is up to date and skipped", LogType.Info, true);
 
             Console.WriteLine();
-            ConsoleWrapper.WriteLine("Finish csharp download\n", LogType.Success);
+            ConsoleWrapper.WriteLine("Finish csharp download\n", LogType.Success, true);
         }
 
-        public static async Task DownloadJs(Config config, string system)
+        private static async Task DownloadJs(Config config, string system)
         {
-            ConsoleWrapper.WriteLine("Starting js download\n", LogType.Info);
+            ConsoleWrapper.WriteLine("Starting js download\n", LogType.Info, true);
 
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "modules/js-module/js-module.dll" : "modules/js-module/libjs-module.so")}") !=
@@ -240,11 +240,11 @@ namespace altVPackage
                     $"https://{CDN_URL}/js-module/{config.Branch}/{system}/modules/js-module/{(config.Windows ? "js-module.dll" : "libjs-module.so")}",
                     $"{config.OutputPath}/modules/js-module/{(config.Windows ? "js-module.dll" : "libjs-module.so")}");
                 
-                ConsoleWrapper.WriteLine("js-module.dll is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("js-module.dll is downloaded", LogType.Success, true);
             }
             else
                 ConsoleWrapper.WriteLine(
-                    $"{(config.Windows ? "js-module.dll" : "libjs-module.so")} is up to date and skipped", LogType.Info);
+                    $"{(config.Windows ? "js-module.dll" : "libjs-module.so")} is up to date and skipped", LogType.Info, true);
 
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "modules/js-module/libnode.dll" : "modules/js-module/libnode.so.108")}") !=
@@ -256,17 +256,17 @@ namespace altVPackage
                     $"https://{CDN_URL}/js-module/{config.Branch}/{system}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.108")}",
                     $"{config.OutputPath}/modules/js-module/{(config.Windows ? "libnode.dll" : "libnode.so.108")}");
                 
-                ConsoleWrapper.WriteLine("libnode.dll is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("libnode.dll is downloaded", LogType.Success, true);
             }
-            else ConsoleWrapper.WriteLine($"{(config.Windows ? "libnode.dll" : "libnode.so.108")} is up to date and skipped", LogType.Info);
+            else ConsoleWrapper.WriteLine($"{(config.Windows ? "libnode.dll" : "libnode.so.108")} is up to date and skipped", LogType.Info, true);
 
             Console.WriteLine();
-            ConsoleWrapper.WriteLine("Finish js download\n", LogType.Success);
+            ConsoleWrapper.WriteLine("Finish js download\n", LogType.Success, true);
         }
 
-        public static async Task DownloadJsByteCode(Config config, string system)
+        private static async Task DownloadJsByteCode(Config config, string system)
         {
-            ConsoleWrapper.WriteLine("Starting js-bytecode download\n", LogType.Info);
+            ConsoleWrapper.WriteLine("Starting js-bytecode download\n", LogType.Info, true);
 
             if (await CalculateHash(
                     $"{config.OutputPath}/{(config.Windows ? "modules/js-bytecode-module.dll" : "modules/libjs-bytecode-module.so")}") !=
@@ -278,14 +278,14 @@ namespace altVPackage
                     $"https://{CDN_URL}/js-bytecode-module/{config.Branch}/{system}/modules/{(config.Windows ? "js-bytecode-module.dll" : "libjs-bytecode-module.so")}",
                     $"{config.OutputPath}/modules/{(config.Windows ? "js-bytecode-module.dll" : "libjs-bytecode-module.so")}");
                 
-                ConsoleWrapper.WriteLine("js-bytecode-module.dll is downloaded", LogType.Success);
+                ConsoleWrapper.WriteLine("js-bytecode-module.dll is downloaded", LogType.Success, true);
             }
             else
                 ConsoleWrapper.WriteLine(
-                    $"{(config.Windows ? "js-bytecode-module.dll" : "libjs-bytecode-module.so")} is up to date and skipped", LogType.Info);
+                    $"{(config.Windows ? "js-bytecode-module.dll" : "libjs-bytecode-module.so")} is up to date and skipped", LogType.Info, true);
 
             Console.WriteLine();
-            ConsoleWrapper.WriteLine("Finish js-bytecode download\n", LogType.Success);
+            ConsoleWrapper.WriteLine("Finish js-bytecode download\n", LogType.Success, true);
         }
 
         private static async Task DownloadFile(string url, string fileName)
@@ -299,7 +299,7 @@ namespace altVPackage
             }
             catch
             {
-                ConsoleWrapper.WriteLine($"Connection timeout on {fileName}", LogType.Error);
+                ConsoleWrapper.WriteLine($"Connection timeout on {fileName}", LogType.Error, true);
                 Console.ReadLine();
                 return;
             }
