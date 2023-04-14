@@ -10,4 +10,8 @@
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
     </PropertyGroup>
 
+    <ItemGroup>
+      <PackageReference Include="ImprovedСonsole" Version="1.0.3" />
+    </ItemGroup>
+
 </Project>
