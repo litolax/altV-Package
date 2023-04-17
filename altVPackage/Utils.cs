@@ -42,10 +42,10 @@ public static class Utils
         }
     }
     
-    public static async Task<string?> GetVersion()
+    public static async Task<string?> GetVersion(string branch, string system)
     {
         var httpClient = new HttpClient();
-        var fileBytes = await httpClient.GetByteArrayAsync("https://cdn.alt-mp.com/server/dev/x64_win32/update.json");
+        var fileBytes = await httpClient.GetByteArrayAsync($"https://cdn.alt-mp.com/server/{branch}/{system}/update.json");
         
         var json = Encoding.UTF8.GetString(fileBytes, 0, fileBytes.Length);
         

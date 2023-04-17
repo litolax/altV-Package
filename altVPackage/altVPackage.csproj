@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <PackageReference Include="ImprovedСonsole" Version="1.1.1" />
+      <PackageReference Include="PromptCLI" Version="1.2.0" />
     </ItemGroup>
 
 </Project>
