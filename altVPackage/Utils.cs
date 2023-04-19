@@ -54,4 +54,35 @@ public static class Utils
             return doc.RootElement.GetProperty("version").GetString();
         }
     }
+
+    public static void FillConfig(ref Config config)
+    {
+        ConsoleWrapper.WriteLine("Please enter branch name (release/rc/dev)");
+        var branch = Console.ReadLine()?.ToLower() ?? "release";
+        config.Branch = !Program.Branches.Contains(branch) ? Program.Branches.First() : branch;
+
+        ConsoleWrapper.WriteLine("Windows build? (y/n)");
+        config.Windows = Console.ReadLine()?.ToLower() == "y";
+
+        ConsoleWrapper.WriteLine("Do you want server build? (y/n)");
+        config.Server = Console.ReadLine()?.ToLower() == "y";
+
+        ConsoleWrapper.WriteLine("Do you want voice build? (y/n)");
+        config.Voice = Console.ReadLine()?.ToLower() == "y";
+
+        ConsoleWrapper.WriteLine("Do you want CSharp build? (y/n)");
+        config.CSharp = Console.ReadLine()?.ToLower() == "y";
+
+        ConsoleWrapper.WriteLine("Do you want JS build? (y/n)");
+        config.Js = Console.ReadLine()?.ToLower() == "y";
+
+        if (config.Branch == "release")
+        {
+            ConsoleWrapper.WriteLine("Do you want JS bytecode build? (y/n)");
+            config.JsByteCode = Console.ReadLine()?.ToLower() == "y";
+        }
+
+        ConsoleWrapper.WriteLine("Input output path");
+        config.OutputPath = Console.ReadLine() ?? "./";
+    }
 }
