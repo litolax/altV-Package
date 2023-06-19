@@ -19,10 +19,10 @@ namespace altVPackage
             if (!File.Exists(CONFIG_PATH))
             {
                 ConsoleWrapper.WriteLine("config file not found", LogType.Error, true);
-                
+
                 Utils.FillConfig(ref Config);
                 await File.WriteAllTextAsync(CONFIG_PATH, JsonSerializer.Serialize(Config));
-                
+
                 ConsoleWrapper.WriteLine("config file created", LogType.Success, true);
             }
             else
@@ -38,19 +38,20 @@ namespace altVPackage
 
             var system = Config.Windows ? "x64_win32" : "x64_linux";
             string version = await Utils.GetVersion(Config.Branch, system) ?? "unknown";
-            
-            Console.Write($"Do you want to continue with these settings?\nVersion: {version}\nSystem: {system}\nBranch: {Config.Branch}\nServer: {Config.Server}\nVoice: {Config.Voice}\nCSharp: {Config.CSharp}\nJS: {Config.Js}\nJSByteCode: {Config.JsByteCode}\nOutput path: {Config.OutputPath}\nType (y/n): ");
+
+            Console.Write(
+                $"Do you want to continue with these settings?\nVersion: {version}\nSystem: {system}\nBranch: {Config.Branch}\nServer: {Config.Server}\nVoice: {Config.Voice}\nCSharp: {Config.CSharp}\nJS: {Config.Js}\nJSByteCode: {Config.JsByteCode}\nOutput path: {Config.OutputPath}\nType (y/n): ");
             var choose = Console.ReadLine()?.ToLowerInvariant() ?? "y";
-            
+
             if (choose.Contains("n"))
             {
                 Utils.FillConfig(ref Config);
                 await File.WriteAllTextAsync(CONFIG_PATH, JsonSerializer.Serialize(Config));
-                
+
                 system = Config.Windows ? "x64_win32" : "x64_linux";
                 version = await Utils.GetVersion(Config.Branch, system) ?? "unknown";
             }
-            
+
             ConsoleWrapper.WriteLine(
                 $"Begin packages download for branch: {Config.Branch}, version: {version}, system: {system}",
                 LogType.Info, true);
@@ -141,6 +142,31 @@ namespace altVPackage
                 ConsoleWrapper.WriteLine("pedmodels.bin is downloaded", LogType.Success, true);
             }
             else ConsoleWrapper.WriteLine("pedmodels.bin is up to date and skipped", LogType.Info, true);
+
+            if (Config.Branch == "dev")
+            {
+                if (await Utils.CalculateHash($"{Config.OutputPath}/data/rpfdata.bin") !=
+                    await Utils.GetUpdatedHash($"https://{CDN_URL}/data/{Config.Branch}/update.json",
+                        "rpfdata.bin"))
+                {
+                    await Utils.DownloadFile($"https://{CDN_URL}/data/{Config.Branch}/data/rpfdata.bin",
+                        $"{Config.OutputPath}/data/rpfdata.bin");
+
+                    ConsoleWrapper.WriteLine("rpfdata.bin is downloaded", LogType.Success, true);
+                }
+                else ConsoleWrapper.WriteLine("rpfdata.bin is up to date and skipped", LogType.Info, true);
+
+                if (await Utils.CalculateHash($"{Config.OutputPath}/data/weaponmodels.bin") !=
+                    await Utils.GetUpdatedHash($"https://{CDN_URL}/data/{Config.Branch}/update.json",
+                        "weaponmodels.bin"))
+                {
+                    await Utils.DownloadFile($"https://{CDN_URL}/data/{Config.Branch}/data/weaponmodels.bin",
+                        $"{Config.OutputPath}/data/weaponmodels.bin");
+
+                    ConsoleWrapper.WriteLine("weaponmodels.bin is downloaded", LogType.Success, true);
+                }
+                else ConsoleWrapper.WriteLine("weaponmodels.bin is up to date and skipped", LogType.Info, true);
+            }
 
             ConsoleWrapper.WriteLine("Finish server download", LogType.Success, true);
         }
